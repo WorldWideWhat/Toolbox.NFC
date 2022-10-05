@@ -3,6 +3,7 @@
     public enum ErrorCode : uint
     {
         ERROR_BROKEN_PIPE = 0x00000109,
+        ERROR_INVALID_HANDLE = 0x00000006,
         SCARD_E_BAD_SEEK = 0x80100029,
         SCARD_E_CANCELLED = 0x80100002,
         SCARD_E_CANT_DISPOSE = 0x8010000E,
