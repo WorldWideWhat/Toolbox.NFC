@@ -32,9 +32,7 @@ namespace Toolbox.NFC.Reader
         {
             if (_hCard == IntPtr.Zero)
                 throw new Exception("No card attached");
-            if(_driver is null)
-                AttachDriver();
-
+            AttachDriver();
             return _driver!.Execute(command);
         }
 
@@ -59,7 +57,7 @@ namespace Toolbox.NFC.Reader
             var retval = WinSCard.SCardConnect(
                 _hContext, _readerName,
                 WinSCard.SCARD_SHARE_SHARED,
-                WinSCard.SCARD_PROTOCOL_T1,
+                SCardProtocol.SCARD_PROTOCOL_Tx,
                 ref _hCard,
                 ref protocol);
             return retval == ErrorCode.SCARD_S_SUCCESS;
@@ -72,6 +70,7 @@ namespace Toolbox.NFC.Reader
         {
             if (_hCard == IntPtr.Zero) return;
             _ = WinSCard.SCardDisconnect(_hCard, 0);
+            
             _hCard = IntPtr.Zero;
         }
 
@@ -103,14 +102,21 @@ namespace Toolbox.NFC.Reader
                 _ => CardType.Unknown_Card_Type,
             };
         }
+        
+        
+        public byte[]? GetUID()
+        {
+            var command = new Commands.GetUidCommand(GetReaderType());
+            var response = Execute(command);
+            if (!response.Success) return null;
+            return response.ResponseData;
+        }
         /// <summary>
         /// Get attached reader type
         /// </summary>
         /// <returns>ReaderType</returns>
         public ReaderType GetReaderType() => DriverHandler.GetReaderType(_readerName);
         
-        
-
         public void Dispose()
         {
             DisconnectCard();

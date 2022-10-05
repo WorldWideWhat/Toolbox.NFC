@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using Toobox.NFC.WinSCard;
+using Toolbox.NFC.Reader.Event;
+using Toolbox.NFC.Reader.Tools;
 using WinSCard = Toobox.NFC.WinSCard.WinSCardInterop;
 
 namespace Toolbox.NFC.Reader
@@ -10,13 +12,20 @@ namespace Toolbox.NFC.Reader
         private IntPtr _hContext = IntPtr.Zero;
         private string? _readerName;
         private SmartCard? _smartCard = null;
+        private Thread? _stateThread = null;
+        private Task? _stateTask = null;
+        private CancellationTokenSource _cancelTokenSource;
+        private volatile bool _runThread = true;
+
+        public event EventHandler<CardPresentStateArgs> OnCardPresentChangedEvent;
+        public event EventHandler<CardInUseStateArgs> OnCardInUseChangedEvent;
         public static List<string> Readers
         {
             get
             {
                 List<string> readerList = new();
                 IntPtr hContext = IntPtr.Zero;
-                var retVal = WinSCard.SCardEstablishContext(2, IntPtr.Zero, IntPtr.Zero, out hContext);
+                var retVal = WinSCard.SCardEstablishContext(SCardScope.SCARD_SCOPE_USER, IntPtr.Zero, IntPtr.Zero, out hContext);
                 if (retVal != 0) return readerList;
 
                 uint pcchReaders = 0;
@@ -52,6 +61,7 @@ namespace Toolbox.NFC.Reader
             {
                 throw new Exception($"Unable to connect to {readerName}");
             }
+
         }
 
         /// <summary>
@@ -70,14 +80,131 @@ namespace Toolbox.NFC.Reader
         }
 
         /// <summary>
+        /// Raise card present event
+        /// </summary>
+        /// <param name="present">Card present</param>
+        /// <returns>Task</returns>
+        private Task RaiseOnCardPresentEvent(bool present)
+        {
+            return Task.Factory.StartNew(() =>
+                {
+                    OnCardPresentChangedEvent?.Invoke(this, new CardPresentStateArgs(_readerName, present));
+                },
+                _cancelTokenSource.Token,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
+        }
+
+        /// <summary>
+        /// Raise card in use state event
+        /// </summary>
+        /// <param name="inUse">In use state</param>
+        /// <returns>Task</returns>
+        private Task RaiseCardInUseStateEvent(bool inUse)
+        {
+            return Task.Factory.StartNew(() =>
+                {
+                    OnCardInUseChangedEvent?.Invoke(this, new CardInUseStateArgs(_readerName, inUse));
+                },
+                _cancelTokenSource.Token,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
+        }
+
+        /// <summary>
+        /// Reader state check thread
+        /// </summary>
+        /// <returns></returns>
+        private async Task CheckStateThread()
+        {
+            if(_readerName is null) return;
+
+            var readerState = new SCard_ReaderState
+            {
+                RdrName = _readerName
+            };
+
+            uint eventState = 0;
+            Console.WriteLine($"Start thread {_runThread}");
+            while (_runThread && !_cancelTokenSource.IsCancellationRequested)
+            {
+                var result = WinSCard.SCardGetStatusChange(
+                    _hContext,
+                    1000,
+                    ref readerState,
+                    1);
+
+                if(result != ErrorCode.SCARD_S_SUCCESS)
+                {
+                    Console.WriteLine("No success");
+                    _runThread = false;
+                    break;
+                }
+
+                if(eventState != readerState.RdrEventState)
+                {
+                    if(BinaryTools.FlagChanged(eventState, readerState.RdrEventState, SCardState.Present))
+                    {
+                        var present = BinaryTools.IsFlagSet(readerState.RdrEventState, SCardState.Present);
+                        await RaiseOnCardPresentEvent(present);
+                    }
+
+                    if (BinaryTools.FlagChanged(eventState, readerState.RdrEventState, SCardState.Inuse))
+                    {
+                        var inuse = BinaryTools.IsFlagSet(readerState.RdrEventState, SCardState.Inuse);
+                        await RaiseCardInUseStateEvent(inuse);
+                    }
+
+                    /*
+                    Console.WriteLine($"Ignore     : {IsFlagSet(readerState.RdrEventState, SCardState.Ignore)}");
+                    Console.WriteLine($"Changed    : {IsFlagSet(readerState.RdrEventState, SCardState.Changed)}");
+                    Console.WriteLine($"Unknown    : {IsFlagSet(readerState.RdrEventState, SCardState.Unknown)}");
+                    Console.WriteLine($"Unavailable: {IsFlagSet(readerState.RdrEventState, SCardState.Unavailable)}");
+                    Console.WriteLine($"Empty      : {IsFlagSet(readerState.RdrEventState, SCardState.Empty)}");
+                    Console.WriteLine($"Present    : {IsFlagSet(readerState.RdrEventState, SCardState.Present)}");
+                    Console.WriteLine($"Atrmatch   : {IsFlagSet(readerState.RdrEventState, SCardState.Atrmatch)}");
+                    Console.WriteLine($"Exclusive  : {IsFlagSet(readerState.RdrEventState, SCardState.Exclusive)}");
+                    Console.WriteLine($"Inuse      : {IsFlagSet(readerState.RdrEventState, SCardState.Inuse)}");
+                    Console.WriteLine($"Mute       : {IsFlagSet(readerState.RdrEventState, SCardState.Mute)}");
+                    Console.WriteLine($"Unpowered  : {IsFlagSet(readerState.RdrEventState, SCardState.Unpowered)}");
+                    */
+                    eventState = readerState.RdrEventState;
+                }
+                Thread.Sleep(100);
+            }
+        }
+
+        /// <summary>
         /// Establish reader connection
         /// </summary>
         /// <returns></returns>
         public bool ConnectReader()
         {
-            var result = WinSCard.SCardEstablishContext(2, IntPtr.Zero, IntPtr.Zero, out _hContext) == ErrorCode.SCARD_S_SUCCESS;
+            if (_readerName is null)
+                throw new Exception("No reader selected");
+            var result = WinSCard.SCardEstablishContext(
+                SCardScope.SCARD_SCOPE_USER, 
+                IntPtr.Zero, 
+                IntPtr.Zero, 
+                out _hContext) == ErrorCode.SCARD_S_SUCCESS;
             if (result)
-                _smartCard = new SmartCard(ref _hContext, _readerName);
+            {
+                _smartCard = new SmartCard(ref _hContext, _readerName!);
+
+                if(_stateTask != null)
+                {
+                    _runThread = false;
+                    _cancelTokenSource.Cancel();
+                    _stateTask = null;
+                }
+                _runThread = true;
+
+                _cancelTokenSource = new CancellationTokenSource();
+                _stateTask = Task.Factory.StartNew(async () => await CheckStateThread(),
+                    _cancelTokenSource.Token,
+                    TaskCreationOptions.LongRunning,
+                    TaskScheduler.Default);
+            }
             return result;
         }
 
@@ -108,9 +235,13 @@ namespace Toolbox.NFC.Reader
             }
             _ = WinSCard.SCardReleaseContext(_hContext);
             _hContext = IntPtr.Zero;
+            _runThread = false;
+            _stateThread?.Join();
         }
 
-
+        /// <summary>
+        /// Dispose items
+        /// </summary>
         public void Dispose()
         {
             DisconnectReader();

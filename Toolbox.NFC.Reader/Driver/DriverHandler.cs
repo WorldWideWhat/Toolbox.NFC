@@ -12,7 +12,7 @@
             var name = readerName.ToLower().Trim();
 
             if (name.Contains("omnikey")) return ReaderType.Omnikey;
-            if (name.Contains("acr122") ||name.Contains("acr1252")) return ReaderType.ACR;
+            if (name.Contains("acr122")) return ReaderType.ACR;
             return ReaderType.Unsupported;
         }
     }

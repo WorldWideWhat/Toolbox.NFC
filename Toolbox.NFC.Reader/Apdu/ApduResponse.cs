@@ -2,8 +2,8 @@
 {
     public class ApduResponse
     {
-        public byte SW1 { get; set; }
-        public byte SW2 { get; set; }
+        public byte SW1 { get; set; } = 0x00;
+        public byte SW2 { get; set; } = 0x00;
 
         public ushort SW
         {

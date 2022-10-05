@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NFC.App", "Toolbox.NFC.App\Toolbox.NFC.App.csproj", "{A50F9EA2-CD77-445D-8DFD-F0775E81B630}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toolbox.NFC.App", "Toolbox.NFC.App\Toolbox.NFC.App.csproj", "{A50F9EA2-CD77-445D-8DFD-F0775E81B630}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NFC.Reader", "Toolbox.NFC.Reader\Toolbox.NFC.Reader.csproj", "{626AF39A-A8A5-4724-932E-7174F119C938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toolbox.NFC.Reader", "Toolbox.NFC.Reader\Toolbox.NFC.Reader.csproj", "{626AF39A-A8A5-4724-932E-7174F119C938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toobox.NFC.WinSCard", "Toobox.NFC.WinSCard\Toobox.NFC.WinSCard.csproj", "{AF7244E8-7A10-4F92-A74E-92D3AE7B2F6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toobox.NFC.WinSCard", "Toobox.NFC.WinSCard\Toobox.NFC.WinSCard.csproj", "{AF7244E8-7A10-4F92-A74E-92D3AE7B2F6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

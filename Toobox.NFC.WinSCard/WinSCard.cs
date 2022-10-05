@@ -9,10 +9,11 @@ namespace Toobox.NFC.WinSCard
          */
         #region WinScard.dll
         [DllImport("WinScard.dll")]
-        public static extern ErrorCode SCardEstablishContext(uint dwScope,
-        IntPtr notUsed1,
-        IntPtr notUsed2,
-        out IntPtr phContext);
+        public static extern ErrorCode SCardEstablishContext(
+            uint dwScope,
+            IntPtr notUsed1,
+            IntPtr notUsed2,
+            out IntPtr phContext);
 
 
         // *********************************************************************************************************
@@ -84,7 +85,12 @@ namespace Toobox.NFC.WinSCard
         // Description  : Current state of the smart card in the reader
         //*********************************************************************************************************
         [DllImport("WinScard.dll")]
-        public static extern ErrorCode SCardState(IntPtr hCard, ref IntPtr state, ref IntPtr protocol, ref Byte[] ATR, ref int ATRLen);
+        public static extern ErrorCode SCardState(
+            IntPtr hCard, 
+            ref IntPtr state, 
+            ref IntPtr protocol, 
+            ref byte[] ATR, 
+            ref int ATRLen);
 
 
         // *********************************************************************************************************
@@ -104,11 +110,13 @@ namespace Toobox.NFC.WinSCard
         //*********************************************************************************************************
 
         [DllImport("WinScard.dll")]
-        public static extern ErrorCode SCardTransmit(IntPtr hCard, ref SCard_IO_Request pioSendRequest,
-                                                           ref Byte SendBuff,
-                                                           int SendBuffLen,
-                                                           ref SCard_IO_Request pioRecvRequest,
-                                                           ref Byte RecvBuff, ref int RecvBuffLen);
+        public static extern ErrorCode SCardTransmit(
+            IntPtr hCard, 
+            ref SCard_IO_Request pioSendRequest,
+            ref Byte SendBuff,
+            int SendBuffLen,
+            ref SCard_IO_Request pioRecvRequest,
+            ref Byte RecvBuff, ref int RecvBuffLen);
 
         /*
         [DllImport("WinScard.dll")]
@@ -126,10 +134,11 @@ namespace Toobox.NFC.WinSCard
         // Description  : The current availability of the cards in a specific set of readers changes.
         //*********************************************************************************************************
         [DllImport("winscard.dll", CharSet = CharSet.Unicode)]
-        public static extern ErrorCode SCardGetStatusChange(IntPtr hContext,
-        int value_Timeout,
-        ref SCard_ReaderState ReaderState,
-        uint ReaderCount);
+        public static extern ErrorCode SCardGetStatusChange(
+            IntPtr hContext,
+            int value_Timeout,
+            ref SCard_ReaderState ReaderState,
+            uint ReaderCount);
         /*
         [DllImport("winscard.dll")]
         public static extern int SCardGetAttrib(IntPtr hCard, int dwAttrId, out IntPtr pbAttr, ref int pcbAttrLen);
@@ -140,7 +149,7 @@ namespace Toobox.NFC.WinSCard
         [DllImport("winscard.dll", SetLastError = true)]
         public static extern ErrorCode SCardGetAttrib(
            IntPtr hCard,            // Reference value returned from SCardConnect
-           UInt32 dwAttrId,         // Identifier for the attribute to get
+           uint dwAttrId,         // Identifier for the attribute to get
            byte[] pbAttr,           // Pointer to a buffer that receives the attribute
            ref IntPtr pcbAttrLen    // Length of pbAttr in bytes
         );
@@ -148,7 +157,11 @@ namespace Toobox.NFC.WinSCard
         #endregion
 
         [DllImport("scardsyn.dll")]
-        public static extern int SCardCLGetUID(IntPtr ulHandleCard, Byte[] pucUID, ref UInt32 ulUIDBufLen, ref UInt32 pulnByteUID);
+        public static extern int SCardCLGetUID(
+            IntPtr ulHandleCard, 
+            byte[] pucUID, 
+            ref uint ulUIDBufLen, 
+            ref uint pulnByteUID);
 
         // Context Scope
 
@@ -166,19 +179,13 @@ namespace Toobox.NFC.WinSCard
 
         public const int SCARD_UNPOWER_CARD = 2; // Power down the card on close
 
-        //   PROTOCOL
-
-        public const uint SCARD_PROTOCOL_T0 = 0x1;                  // T=0 is the active protocol.
-        public const uint SCARD_PROTOCOL_T1 = 0x2;                  // T=1 is the active protocol.
-        public const uint SCARD_PROTOCOL_UNDEFINED = 0x0;
-        public const uint SCARD_PROTOCOL_RAW = 0x10000;
-        public const uint SCARD_PROTOCOL_Tx = 0x3;
-        public const uint SCARD_PROTOCOL_DEFAULT = 0x80000000;
-        public const uint SCARD_PROTOCOL_OPTIMAL = 0;
-
-
         public const int SCARD_ATTR_VENDOR_NAME = 0x100;
         public const int SCARD_ATTR_VENDOR_IFD_SERIAL_NO = 65795;
+/*
+        public const int SCARD_SCOPE_USER = 0;
+        public const int SCARD_SCOPE_TERMINAL = 1;
+        public const int SCARD_SCOPE_SYSTEM = 2;
+*/
         //IO Request Control
 
         //Card Type

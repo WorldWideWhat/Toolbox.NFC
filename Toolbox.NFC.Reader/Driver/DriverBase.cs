@@ -25,7 +25,6 @@ namespace Toolbox.NFC.Reader.Driver
             rioreq.cbPciLength = 8;
             var rxBufferLen = 255;
             var rxBuffer = new byte[rxBufferLen];
-
             var txBuffer = command.GetBuffer();
 
             var adpuResponse = new ApduResponse();
@@ -33,16 +32,13 @@ namespace Toolbox.NFC.Reader.Driver
             var ret = WinSCard.SCardTransmit(_hCard, ref sioreq, ref txBuffer[0], txBuffer.Length + 1, ref rioreq, ref rxBuffer[0], ref rxBufferLen);
             if (ret != ErrorCode.SCARD_S_SUCCESS)
             {
-                throw new Exception($"Failed to execute SCardTransmit. Error code {ret}");
+                return adpuResponse;
             }
             adpuResponse.ExtractResponse(rxBuffer, rxBufferLen);
             return adpuResponse;
         }
 
-        public virtual Task<ApduResponse> ExecuteAsync(ApduCommand command)
-        {
-            return Task.Run(() => Execute(command));
-        }
+        public virtual Task<ApduResponse> ExecuteAsync(ApduCommand command) =>  Task.Run(() => Execute(command));
 
     }
 }
