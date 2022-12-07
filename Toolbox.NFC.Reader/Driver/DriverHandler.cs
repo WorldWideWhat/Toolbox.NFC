@@ -1,6 +1,6 @@
 ﻿namespace Toolbox.NFC.Reader.Driver
 {
-    internal class DriverHandler
+    internal sealed class DriverHandler
     {
         /// <summary>
         /// Get supported reader type
@@ -12,7 +12,7 @@
             var name = readerName.ToLower().Trim();
 
             if (name.Contains("omnikey")) return ReaderType.Omnikey;
-            if (name.Contains("acr122")) return ReaderType.ACR;
+            if (name.Contains("acr122") || name.Contains("acr1252")) return ReaderType.ACR;
             return ReaderType.Unsupported;
         }
     }

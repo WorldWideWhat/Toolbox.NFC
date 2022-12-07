@@ -3,25 +3,28 @@ using Toolbox.NFC.Reader.Driver;
 
 namespace Toolbox.NFC.Reader.Commands
 {
-    internal class MifareClassicLoadKeyCommand : ApduCommand
+    public sealed class MifareUltralightCAuthorizeCommand : ApduCommand
     {
+        private readonly byte[] _authKey;
         private readonly ReaderType _readerType;
-        public MifareClassicLoadKeyCommand(byte[] key, ReaderType reader)
+
+        public MifareUltralightCAuthorizeCommand(byte[] authKey, ReaderType readerType)
         {
-            _readerType = reader;
+            _authKey = authKey;
+            _readerType = readerType;
             if (_readerType == ReaderType.Unsupported)
                 throw new Exception("Unsupported reader");
-            base.CommandData = key;
         }
 
         public override byte[] GetBuffer()
         {
             return _readerType switch
             {
-                ReaderType.Omnikey => new Driver.Omnikey.MifareClassicLoadKeyCommand(base.CommandData!).GetBuffer(),
-                ReaderType.ACR => new Driver.ACR.MifareClassicLoadKeyCommand(base.CommandData!).GetBuffer(),
+                ReaderType.Omnikey => new Driver.Omnikey.MifareUltralightCAuthorizeCommand(_authKey).GetBuffer(),
+                ReaderType.ACR => new Driver.ACR.MifareUltralightCAuthorizeCommand(_authKey).GetBuffer(),
                 _ => throw new Exception("Unsupported reader"),
             };
         }
+
     }
 }

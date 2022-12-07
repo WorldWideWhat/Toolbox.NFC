@@ -1,9 +1,9 @@
-﻿using Toobox.NFC.WinSCard;
+﻿using Toolbox.NFC.WinSCard;
 using Toolbox.NFC.Reader.Card;
 using Toolbox.NFC.Reader.Driver.ACR;
 using Toolbox.NFC.Reader.Driver.Omnikey;
 using Toolbox.NFC.Reader.Driver;
-using WinSCard = Toobox.NFC.WinSCard.WinSCardInterop;
+using WinSCard = Toolbox.NFC.WinSCard.WinSCardInterop;
 using Toolbox.NFC.Reader.Apdu;
 
 namespace Toolbox.NFC.Reader

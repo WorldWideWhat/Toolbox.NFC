@@ -6,6 +6,9 @@ namespace Toolbox.NFC.Reader.Card
     {
         private readonly SmartCard _smartCard;
 
+        /// <summary>
+        /// Mifare classic key type
+        /// </summary>
         public enum KeyType : byte
         {
             KeyA = 0x60,
@@ -30,10 +33,30 @@ namespace Toolbox.NFC.Reader.Card
             return _smartCard.Execute(apduCommand).Success;
         }
 
+        /// <summary>
+        /// Authoruze mifare classic sector
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="keyType">Key type</param>
+        /// <param name="sector">Data sector</param>
+        /// <returns>Success</returns>
         public virtual bool Authorize(byte[] key, KeyType keyType, int sector)
         {
-            return false;
+            if(!LoadKey(key)) return false;
+
+            var command = new Commands.MifareClassicAuthorizeCommand(sector, keyType, _smartCard.GetReaderType());
+            return _smartCard.Execute(command).Success;
         }
+
+        public virtual byte[]? Read(int sector, int block)
+        {
+            var command = new Commands.MifareClassicReadCommand(sector, block, _smartCard.GetReaderType());
+
+            var response = _smartCard.Execute(command);
+            if (!response.Success) return null;
+            return response.ResponseData;
+        }
+
 
     }
 }
