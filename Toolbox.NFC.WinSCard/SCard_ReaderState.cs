@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Toobox.NFC.WinSCard
+namespace Toolbox.NFC.WinSCard
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct SCard_ReaderState
@@ -10,6 +10,9 @@ namespace Toobox.NFC.WinSCard
         public uint RdrCurrState;
         public uint RdrEventState;
         public uint ATRLength;
+        /// <summary>
+        /// Fixed size return array
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x24, ArraySubType = UnmanagedType.U1)]
         public byte[] ATRValue;
     }

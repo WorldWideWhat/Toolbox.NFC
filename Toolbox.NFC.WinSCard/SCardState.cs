@@ -1,4 +1,4 @@
-﻿namespace Toobox.NFC.WinSCard
+﻿namespace Toolbox.NFC.WinSCard
 {
     public static class SCardState
     {

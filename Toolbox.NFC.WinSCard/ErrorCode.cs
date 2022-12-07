@@ -1,5 +1,9 @@
-﻿namespace Toobox.NFC.WinSCard
+﻿namespace Toolbox.NFC.WinSCard
 {
+    
+    /// <summary>
+    /// WinSCard return codes
+    /// </summary>
     public enum ErrorCode : uint
     {
         ERROR_BROKEN_PIPE = 0x00000109,

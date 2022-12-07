@@ -1,5 +1,8 @@
-﻿namespace Toobox.NFC.WinSCard
+﻿namespace Toolbox.NFC.WinSCard
 {
+    /// <summary>
+    /// Protocol types
+    /// </summary>
     public sealed class SCardProtocol
     {
         public static readonly uint SCARD_PROTOCOL_T0 = 0x1;                  // T=0 is the active protocol.

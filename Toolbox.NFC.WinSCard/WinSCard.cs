@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Toobox.NFC.WinSCard
+namespace Toolbox.NFC.WinSCard
 {
     public sealed class WinSCardInterop
     {
@@ -69,8 +69,8 @@ namespace Toobox.NFC.WinSCard
         [DllImport("WinScard.dll", EntryPoint = "SCardListReadersA", CharSet = CharSet.Ansi)]
         public static extern ErrorCode SCardListReaders(
           IntPtr hContext,
-          byte[] mszGroups,
-          byte[] mszReaders,
+          byte[] ?mszGroups,
+          byte[] ?mszReaders,
           ref UInt32 pcchReaders
           );
 
@@ -192,6 +192,7 @@ namespace Toobox.NFC.WinSCard
         public const int card_Type_Mifare_1K = 1;
         public const int card_Type_Mifare_4K = 2;
 
+        // Mifare Ultralight C default DES key
         public static byte[] ULCauthKeyDefalt = new byte[] { 0x49, 0x45, 0x4D, 0x4B, 0x41, 0x45, 0x52, 0x42, 0x21, 0x4E, 0x41, 0x43, 0x55, 0x4F, 0X59, 0x46 };
 
 

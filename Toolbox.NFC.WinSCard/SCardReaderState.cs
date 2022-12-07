@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Toobox.NFC.WinSCard
+namespace Toolbox.NFC.WinSCard
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct SCardReaderState
