@@ -2,7 +2,7 @@
 using Toolbox.NFC.WinSCard;
 using Toolbox.NFC.Reader.Event;
 using Toolbox.NFC.Reader.Tools;
-using WinSCard = Toolbox.NFC.WinSCard.WinSCardInterop;
+using SCard = Toolbox.NFC.WinSCard.WinSCardInterop;
 
 namespace Toolbox.NFC.Reader
 {
@@ -27,16 +27,17 @@ namespace Toolbox.NFC.Reader
             {
                 List<string> readerList = new();
                 IntPtr hContext = IntPtr.Zero;
-                var retVal = WinSCard.SCardEstablishContext(SCardScope.SCARD_SCOPE_USER, IntPtr.Zero, IntPtr.Zero, out hContext);
+                
+                var retVal = SCard.SCardEstablishContext(SCardScope.SCARD_SCOPE_USER, IntPtr.Zero, IntPtr.Zero, out hContext);
                 if (retVal != 0) return readerList;
 
                 uint pcchReaders = 0;
-                retVal = WinSCard.SCardListReaders(hContext, null, null, ref pcchReaders);
+                retVal = SCard.SCardListReaders(hContext, null, null, ref pcchReaders);
                 if (retVal != ErrorCode.SCARD_S_SUCCESS) return readerList;
                 char nullchar = (char)0;
 
                 var mszReaders = new byte[pcchReaders];
-                _ = WinSCard.SCardListReaders(hContext, null, mszReaders, ref pcchReaders);
+                _ = SCard.SCardListReaders(hContext, null, mszReaders, ref pcchReaders);
                 var currbuff = Encoding.ASCII.GetString(mszReaders);
                 int len = (int)pcchReaders;
                 if (len > 0)
@@ -51,7 +52,7 @@ namespace Toolbox.NFC.Reader
                     }
                 }
 
-                _ = WinSCard.SCardReleaseContext(hContext);
+                _ = SCard.SCardReleaseContext(hContext);
                 return readerList;
             }
         }
@@ -135,7 +136,7 @@ namespace Toolbox.NFC.Reader
             _cancelTokenSource ??= new CancellationTokenSource();
             while (_runThread && !_cancelTokenSource.IsCancellationRequested)
             {
-                var result = WinSCard.SCardGetStatusChange(
+                var result = SCard.SCardGetStatusChange(
                     _hContext,
                     1000,
                     ref readerState,
@@ -178,7 +179,7 @@ namespace Toolbox.NFC.Reader
         {
             if (_readerName is null)
                 throw new Exception("No reader selected");
-            var result = WinSCard.SCardEstablishContext(
+            var result = SCard.SCardEstablishContext(
                 SCardScope.SCARD_SCOPE_USER, 
                 IntPtr.Zero, 
                 IntPtr.Zero, 
@@ -229,7 +230,7 @@ namespace Toolbox.NFC.Reader
                 if (_smartCard.IsCardConnected())
                     _smartCard.DisconnectCard();
             }
-            _ = WinSCard.SCardReleaseContext(_hContext);
+            _ = SCard.SCardReleaseContext(_hContext);
             _hContext = IntPtr.Zero;
             _runThread = false;
         }

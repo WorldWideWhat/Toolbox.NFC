@@ -3,7 +3,7 @@ using Toolbox.NFC.Reader.Card;
 using Toolbox.NFC.Reader.Driver.ACR;
 using Toolbox.NFC.Reader.Driver.Omnikey;
 using Toolbox.NFC.Reader.Driver;
-using WinSCard = Toolbox.NFC.WinSCard.WinSCardInterop;
+using SCard = Toolbox.NFC.WinSCard.WinSCardInterop;
 using Toolbox.NFC.Reader.Apdu;
 
 namespace Toolbox.NFC.Reader
@@ -54,9 +54,10 @@ namespace Toolbox.NFC.Reader
         {
             if (_hContext == IntPtr.Zero) return false;
             IntPtr protocol = IntPtr.Zero;
-            var retval = WinSCard.SCardConnect(
+            
+            var retval = SCard.SCardConnect(
                 _hContext, _readerName,
-                WinSCard.SCARD_SHARE_SHARED,
+                SCard.SCARD_SHARE_SHARED,
                 SCardProtocol.SCARD_PROTOCOL_Tx,
                 ref _hCard,
                 ref protocol);
@@ -69,7 +70,7 @@ namespace Toolbox.NFC.Reader
         public void DisconnectCard()
         {
             if (_hCard == IntPtr.Zero) return;
-            _ = WinSCard.SCardDisconnect(_hCard, 0);
+            _ = SCard.SCardDisconnect(_hCard, 0);
             
             _hCard = IntPtr.Zero;
         }
@@ -85,13 +86,13 @@ namespace Toolbox.NFC.Reader
             SCard_ReaderState readerState = new()
             {
                 RdrName = _readerName,
-                RdrCurrState = WinSCard.SCARD_STATE_UNAWARE,
-                RdrEventState = WinSCard.SCARD_STATE_UNAWARE,
+                RdrCurrState = SCard.SCARD_STATE_UNAWARE,
+                RdrEventState = SCard.SCARD_STATE_UNAWARE,
                 UserData = "Mifare Card"
             };
 
             uint readerCount = 1;
-            var ret = WinSCard.SCardGetStatusChange(_hContext, 100, ref readerState, readerCount);
+            var ret = SCard.SCardGetStatusChange(_hContext, 100, ref readerState, readerCount);
             if (ret != ErrorCode.SCARD_S_SUCCESS) return CardType.Unknown_Card_Type;
             if (readerState.ATRLength < 6) return CardType.Unknown_Card_Type;
 

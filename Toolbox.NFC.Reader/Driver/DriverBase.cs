@@ -1,6 +1,6 @@
 ﻿using Toolbox.NFC.WinSCard;
 using Toolbox.NFC.Reader.Apdu;
-using WinSCard = Toolbox.NFC.WinSCard.WinSCardInterop;
+using SCard = Toolbox.NFC.WinSCard.WinSCardInterop;
 
 namespace Toolbox.NFC.Reader.Driver
 {
@@ -41,7 +41,7 @@ namespace Toolbox.NFC.Reader.Driver
 #endif
             var adpuResponse = new ApduResponse();
 
-            var ret = WinSCard.SCardTransmit(_hCard, ref sioreq, ref txBuffer[0], txBuffer.Length + 1, ref rioreq, ref rxBuffer[0], ref rxBufferLen);
+            var ret = SCard.SCardTransmit(_hCard, ref sioreq, ref txBuffer[0], txBuffer.Length + 1, ref rioreq, ref rxBuffer[0], ref rxBufferLen);
             if (ret != ErrorCode.SCARD_S_SUCCESS)
             {
                 return adpuResponse;

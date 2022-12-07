@@ -5,7 +5,6 @@ namespace Toolbox.NFC.Reader.Commands
 {
     public sealed class MifareClassicReadCommand : ApduCommand
     {
-        private readonly ReaderType _readerType;
         public MifareClassicReadCommand(int sector, int block, ReaderType readerType)
         {
             byte n_block = (byte)((sector * 4) + block);
@@ -14,8 +13,7 @@ namespace Toolbox.NFC.Reader.Commands
             base.P1 = 0x00;
             base.P2 = n_block;
             base.CommandData = new byte[0x10];
-            _readerType = readerType;
-            if (_readerType == ReaderType.Unsupported)
+            if (readerType == ReaderType.Unsupported)
                 throw new Exception("Unsupported reader");
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Toolbox.NFC.WinSCard
 {
-    public sealed class WinSCardInterop
+    public class WinSCardInterop
     {
         /*
          * Create Interops for the WinSCard.dll file
