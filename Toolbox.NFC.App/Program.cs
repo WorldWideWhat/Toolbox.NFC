@@ -1,10 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using System.Reflection.PortableExecutable;
 using Toolbox.NFC.Reader;
-using Toolbox.NFC.Reader.Card;
-
-Console.WriteLine("Hello, World!");
-
 var readers = Reader.Readers;
 
 if(readers.Count > 0)
@@ -38,23 +33,8 @@ if(readers.Count > 0)
         reader.OnCardPresentChangedEvent += Reader_OnCardPresentChangedEvent;
         Console.WriteLine("Reader connected");
         
-        //using var smartCard = reader.GetSmartCard();
         while (true)
         {
-/*
-            if (smartCard.IsCardConnected())
-            {
-                Console.WriteLine("Card connected");
-                if (smartCard.GetConnectedCardType() == Toolbox.NFC.Reader.Card.CardType.Mifare_Standard_1k)
-                {
-                    var mifare = new MifareClassic(smartCard);
-                    var uid = mifare.GetUID();
-                    Console.WriteLine(BitConverter.ToString(uid));
-                    Console.ReadLine();
-                    break;
-                }
-            }
-*/
             await Task.Delay(100);
         }
     }
@@ -65,11 +45,11 @@ void Reader_OnCardPresentChangedEvent(object? sender, Toolbox.NFC.Reader.Event.C
 {
     if (sender is null) return;
 
-    
-    var reader = sender as Reader;
-    var smartCard = reader.GetSmartCard();
 
-    if(e.Pressent)
+    var reader = sender as Reader;
+    var smartCard = reader?.GetSmartCard();
+
+    if (e.Pressent)
     {
         if (smartCard is null)
         {
@@ -79,14 +59,16 @@ void Reader_OnCardPresentChangedEvent(object? sender, Toolbox.NFC.Reader.Event.C
         var cardType = smartCard.GetConnectedCardType();
         Console.WriteLine("Present");
 
-        var uid = smartCard.GetUID();
-        if(uid != null)
+        byte[]? uid = smartCard.GetUID();
+        if (uid != null)
             Console.WriteLine($"UID: {BitConverter.ToString(uid)}");
+
+        Console.WriteLine(cardType);
 
     }
     else
     {
-        smartCard.DisconnectCard();
+        smartCard?.DisconnectCard();
     }
 
     Console.WriteLine($"Card present: {e.Pressent} on reader {e.ReaderName}");
