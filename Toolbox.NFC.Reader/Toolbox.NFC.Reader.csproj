@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Toolbox.NFC.Card\Toolbox.NFC.Card.csproj" />
+    <ProjectReference Include="..\Toolbox.NFC.Enums\Toolbox.NFC.Enums.csproj" />
+    <ProjectReference Include="..\Toolbox.NFC.Reader.Apdu\Toolbox.NFC.Reader.Apdu.csproj" />
+    <ProjectReference Include="..\Toolbox.NFC.Reader.Driver\Toolbox.NFC.Reader.Driver.csproj" />
     <ProjectReference Include="..\Toolbox.NFC.WinSCard\Toolbox.NFC.WinSCard.csproj" />
   </ItemGroup>
 

@@ -9,6 +9,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toolbox.NFC.Reader", "Toolb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toolbox.NFC.WinSCard", "Toolbox.NFC.WinSCard\Toolbox.NFC.WinSCard.csproj", "{AF7244E8-7A10-4F92-A74E-92D3AE7B2F6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NFC.Reader.Driver", "Toolbox.NFC.Reader.Driver\Toolbox.NFC.Reader.Driver.csproj", "{8C3F8E62-A920-4333-AE68-8284554E3888}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NFC.Reader.Apdu", "Toolbox.NFC.Reader.Apdu\Toolbox.NFC.Reader.Apdu.csproj", "{7BA92CC4-6362-4A3F-B3C2-CA4394E13B4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NFC.Reader.Driver.Omnikey", "Toolbox.NFC.Reader.Driver.Omnikey\Toolbox.NFC.Reader.Driver.Omnikey.csproj", "{E25AFDF0-0498-4811-84B4-BDBE0FE65D56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NFC.Card", "Toolbox.NFC.Card\Toolbox.NFC.Card.csproj", "{4FC513E1-181E-4DA1-813D-508630C73315}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NFC.Reader.Driver.ACR", "Toolbox.NFC.Reader.Driver.ACR\Toolbox.NFC.Reader.Driver.ACR.csproj", "{2650D488-A869-4FD7-B449-F5BDE76A3895}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NFC.Enums", "Toolbox.NFC.Enums\Toolbox.NFC.Enums.csproj", "{21AE196A-EB1B-4D0E-8045-35029F4773B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NFC.Tools", "Toolbox.NFC.Tools\Toolbox.NFC.Tools.csproj", "{789C7F7B-A23E-4870-9239-21CD43E40308}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +41,34 @@ Global
 		{AF7244E8-7A10-4F92-A74E-92D3AE7B2F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF7244E8-7A10-4F92-A74E-92D3AE7B2F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF7244E8-7A10-4F92-A74E-92D3AE7B2F6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C3F8E62-A920-4333-AE68-8284554E3888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C3F8E62-A920-4333-AE68-8284554E3888}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C3F8E62-A920-4333-AE68-8284554E3888}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C3F8E62-A920-4333-AE68-8284554E3888}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BA92CC4-6362-4A3F-B3C2-CA4394E13B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BA92CC4-6362-4A3F-B3C2-CA4394E13B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BA92CC4-6362-4A3F-B3C2-CA4394E13B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BA92CC4-6362-4A3F-B3C2-CA4394E13B4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E25AFDF0-0498-4811-84B4-BDBE0FE65D56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E25AFDF0-0498-4811-84B4-BDBE0FE65D56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E25AFDF0-0498-4811-84B4-BDBE0FE65D56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E25AFDF0-0498-4811-84B4-BDBE0FE65D56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FC513E1-181E-4DA1-813D-508630C73315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FC513E1-181E-4DA1-813D-508630C73315}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FC513E1-181E-4DA1-813D-508630C73315}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FC513E1-181E-4DA1-813D-508630C73315}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2650D488-A869-4FD7-B449-F5BDE76A3895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2650D488-A869-4FD7-B449-F5BDE76A3895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2650D488-A869-4FD7-B449-F5BDE76A3895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2650D488-A869-4FD7-B449-F5BDE76A3895}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21AE196A-EB1B-4D0E-8045-35029F4773B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21AE196A-EB1B-4D0E-8045-35029F4773B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21AE196A-EB1B-4D0E-8045-35029F4773B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21AE196A-EB1B-4D0E-8045-35029F4773B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{789C7F7B-A23E-4870-9239-21CD43E40308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{789C7F7B-A23E-4870-9239-21CD43E40308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{789C7F7B-A23E-4870-9239-21CD43E40308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{789C7F7B-A23E-4870-9239-21CD43E40308}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
