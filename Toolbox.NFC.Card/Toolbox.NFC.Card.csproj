@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Toolbox.NFC.Enums\Toolbox.NFC.Enums.csproj" />
+    <ProjectReference Include="..\Toolbox.NFC.Reader.Commands\Toolbox.NFC.Reader.Apdu.csproj" />
+    <ProjectReference Include="..\Toolbox.NFC.Reader.Driver.ACR\Toolbox.NFC.Reader.Driver.ACR.csproj" />
+    <ProjectReference Include="..\Toolbox.NFC.Reader.Driver.Omnikey\Toolbox.NFC.Reader.Driver.Omnikey.csproj" />
+    <ProjectReference Include="..\Toolbox.NFC.Reader.Driver\Toolbox.NFC.Reader.Driver.csproj" />
+    <ProjectReference Include="..\Toolbox.NFC.Tools\Toolbox.NFC.Tools.csproj" />
+    <ProjectReference Include="..\Toolbox.NFC.WinSCard\Toolbox.NFC.WinSCard.csproj" />
+  </ItemGroup>
+
+</Project>
