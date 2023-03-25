@@ -1,4 +1,5 @@
-﻿using Toolbox.NFC.Card;
+﻿using System.Globalization;
+using Toolbox.NFC.Card;
 using Toolbox.NFC.Reader;
 
 // Create list of attached readers
@@ -62,20 +63,44 @@ if (readers.Count > 0)
 
                 
                 byte[]? uid = smartCard.GetUID();
-                if (smartCard.GetConnectedCardType() == Toolbox.NFC.Enums.CardType.Mifare_Standard_1k)
+                switch(smartCard.GetConnectedCardType())
                 {
-                    var key = new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-                    var mifareCard = new MifareClassic(smartCard);
-                    if (!mifareCard.Authorize(key, Toolbox.NFC.Enums.KeyType.KeyA, 2))
-                    {
-                        Console.WriteLine("Unable to authorize card");
-                        return;
-                    }
-                    if (!mifareCard.Write(DATA_TO_WRITE, 2, 1))
-                    {
-                        Console.WriteLine("Unable to write data to sector");
-                        return;
-                    }
+                    case Toolbox.NFC.Enums.CardType.Mifare_Standard_1k:
+                    case Toolbox.NFC.Enums.CardType.Mifare_Standard_4k:
+                        
+                        var mifareCard = new MifareClassic(smartCard);
+                        if (!mifareCard.Authorize(MifareClassic.DefaultKey, Toolbox.NFC.Enums.KeyType.KeyA, 2))
+                        {
+                            Console.WriteLine("Unable to authorize card");
+                            return;
+                        }
+                        if (!mifareCard.Write(DATA_TO_WRITE, 2, 1))
+                        {
+                            Console.WriteLine("Unable to write data to sector");
+                            return;
+                        }
+                        break;
+                    case Toolbox.NFC.Enums.CardType.Mifare_UltraLight_C:
+                        var mifareULC = new MifareUltralightC(smartCard);
+
+                        if(mifareULC.Authorize(MifareUltralightC.DefaultKey))
+                        {
+                            var tmpPage = new byte[] { 0x30, 0x31, 0x32, 0x33 };
+                            var resp = mifareULC.WritePage(5, tmpPage);
+                            var pages = new List<byte[]>();
+                            for (var pageNo = 0; pageNo < 36; pageNo++)
+                            {
+                                var page = mifareULC.ReadPage(pageNo);
+                                pages.Add(page);
+                            }
+                            
+                            for(int pageNo = 0; pageNo < pages.Count; pageNo++)
+                            {
+                                Console.WriteLine($"{pageNo.ToString().PadLeft(2, '0')}: {BitConverter.ToString(pages[pageNo])}");
+                            }
+                        }
+
+                        break;
                 }
 
                 if (uid != null)
