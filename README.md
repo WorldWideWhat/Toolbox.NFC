@@ -8,3 +8,4 @@
 ## Cards/Chips
 * Mifare Classic
 * Mifare Ultralight
+* Mifare Ultralight C
