@@ -46,15 +46,15 @@ namespace Toolbox.NFC.Reader.Driver
             var adpuResponse = new ApduResponse();
 
             var ret = SCard.SCardTransmit(_hCard, ref sioreq, ref txBuffer[0], sendLen, ref rioreq, ref rxBuffer[0], ref rxBufferLen);
+#if DEBUG
+            Console.WriteLine($"RespLen: {rxBufferLen}, Response: {BitConverter.ToString(rxBuffer)}");
+#endif
             
             if (ret != ErrorCode.SCARD_S_SUCCESS)
             {
                 return adpuResponse;
             }
             adpuResponse.ExtractResponse(rxBuffer, rxBufferLen);
-#if DEBUG
-            Console.WriteLine($"RespLen: {rxBufferLen}, Response: {BitConverter.ToString(rxBuffer)}");
-#endif
             return adpuResponse;
         }
 
