@@ -3,7 +3,7 @@
     /// <summary>
     /// Toolset for binary values
     /// </summary>
-    public static class BinaryTools
+    internal static class BinaryTools
     {
         /// <summary>
         /// Check if a flag/bit is set

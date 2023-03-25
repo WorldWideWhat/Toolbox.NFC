@@ -1,7 +1,7 @@
 ﻿
 namespace Toolbox.NFC.Tools
 {
-    public static class NumericTools
+    internal static class NumericTools
     {
         
     }

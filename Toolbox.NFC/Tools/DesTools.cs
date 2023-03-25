@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace Toolbox.NFC.Tools
 {
-    public static class DesTools
+    internal static class DesTools
     {
         public static byte[] Decrypt(byte[] input, byte[] key, byte[] IV = null)
         {
@@ -29,8 +29,8 @@ namespace Toolbox.NFC.Tools
                 tDes.Mode = CipherMode.CBC;
                 tDes.Padding = PaddingMode.Zeros;
                 tDes.IV = IV;
-
-                return tDes.CreateDecryptor().TransformFinalBlock(input, 0, input.Length);
+                return tDes.CreateEncryptor().TransformFinalBlock(input, 0, input.Length);
+                //return tDes.CreateDecryptor().TransformFinalBlock(input, 0, input.Length);
             }
         }
 

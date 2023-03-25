@@ -2,7 +2,7 @@
 
 namespace Toolbox.NFC.Tools
 {
-    public static class ByteTools
+    internal static class ByteTools
     {
         /// <summary>
         /// Get byte array filled with random data
