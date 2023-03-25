@@ -7,8 +7,8 @@ namespace Toolbox.NFC.Card
 
     public class MifareClassic
     {
+        public static readonly byte[] DefaultKey = new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
         private readonly SmartCard _smartCard;
-
         public MifareClassic(SmartCard smartCard)
         {
             if (!smartCard.IsCardConnected())
