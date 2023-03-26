@@ -23,8 +23,8 @@ namespace Toolbox.NFC.Card
         /// <returns>Success</returns>
         public virtual bool Authorize(byte[] desKey)
         {
-            var adpuInit = new Commands.MifareUltralightCAuthInitCommand(_smartCard.GetReaderType());
-            var response = _smartCard.Execute(adpuInit, adpuInit.GetBuffer().Length+1);
+            var adpuInit = Commands.MifareUltralightCAuthInitCommand.Get(_smartCard.GetReaderType());
+            var response = _smartCard.Execute(adpuInit);
             
             if (!response.Success) return false;
 
@@ -44,8 +44,9 @@ namespace Toolbox.NFC.Card
             var testKey2 = new byte[8];
             Array.Copy(authKey2, 8, testKey2 , 0, 8);
 
-            var apduAuth = new Commands.MifareUltralightCAuthorizeCommand(authKey2, _smartCard.GetReaderType());
-            response = _smartCard.Execute(apduAuth, apduAuth.GetBuffer().Length+1); 
+            var apduAuth = Commands.MifareUltralightCAuthorizeCommand.Get(authKey2, _smartCard.GetReaderType());
+
+            response = _smartCard.Execute(apduAuth); 
             if (!response.Success) return false;
             if (response.ResponseData.Length < 11) return false;
 

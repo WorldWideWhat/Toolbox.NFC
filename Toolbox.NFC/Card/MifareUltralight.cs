@@ -20,7 +20,7 @@ namespace Toolbox.NFC.Card
         /// <returns>byte[]</returns>
         public byte[] ReadPage(int pageno)
         {
-            var apduCommand = new Commands.MifareUltralightReadPageCommand(pageno, _smartCard.GetReaderType());
+            var apduCommand = Commands.MifareUltralightReadPageCommand.Get(pageno, _smartCard.GetReaderType());
             var response = _smartCard.Execute(apduCommand);
             if (!response.Success) return null;
             var result = new byte[4];
@@ -36,7 +36,7 @@ namespace Toolbox.NFC.Card
         /// <returns>Success</returns>
         public bool WritePage(int pageno, byte[] data)
         {
-            var apduCommand = new Commands.MifareUltralightWritePageCommand(pageno, data, _smartCard.GetReaderType());
+            var apduCommand = Commands.MifareUltralightWritePageCommand.Get(pageno, data, _smartCard.GetReaderType());
             var response = _smartCard.Execute(apduCommand);
             return response.Success;
         }

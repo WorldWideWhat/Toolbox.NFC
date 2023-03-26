@@ -1,5 +1,4 @@
 ﻿using System;
-using Toolbox.NFC.Reader.Apdu;
 using Toolbox.NFC.Enums;
 
 namespace Toolbox.NFC.Card
@@ -23,7 +22,7 @@ namespace Toolbox.NFC.Card
         /// <returns>Success</returns>
         public bool LoadKey(byte[] key)
         {
-            ApduCommand apduCommand = new Commands.MifareClassicLoadKeyCommand(key, _smartCard.GetReaderType());
+            var apduCommand = Commands.MifareClassicLoadKeyCommand.Get(key, _smartCard.GetReaderType());
             return _smartCard.Execute(apduCommand).Success;
         }
 
@@ -37,8 +36,8 @@ namespace Toolbox.NFC.Card
         public bool Authorize(byte[] key, KeyType keyType, int sector)
         {
             if (!LoadKey(key)) return false;
-            var command = new Commands.MifareClassicAuthorizeCommand(sector, keyType, _smartCard.GetReaderType());
-            var result = _smartCard.Execute(command);
+            var apduCommand = Commands.MifareClassicAuthorizeCommand.Get(sector, keyType, _smartCard.GetReaderType());
+            var result = _smartCard.Execute(apduCommand);
             return result.Success;
         }
 
@@ -50,9 +49,8 @@ namespace Toolbox.NFC.Card
         /// <returns>byte[]</returns>
         public byte[] Read(int sector, int block)
         {
-            var command = new Commands.MifareClassicReadCommand(sector, block, _smartCard.GetReaderType());
-
-            var response = _smartCard.Execute(command);
+            var apduCommand = Commands.MifareClassicReadCommand.Get(sector, block, _smartCard.GetReaderType());
+            var response = _smartCard.Execute(apduCommand);
             if (!response.Success) return null;
             return response.ResponseData;
         }
@@ -71,8 +69,8 @@ namespace Toolbox.NFC.Card
             if(copyBytes > writeData.Length) copyBytes = writeData.Length;
             Array.Copy(data, writeData, copyBytes);
 
-            var command = new Commands.MifareClassicWriteCommand(writeData, sector, block, _smartCard.GetReaderType());
-            var response = _smartCard.Execute(command);
+            var apduCommand = Commands.MifareClassicWriteCommand.Get(writeData, sector, block, _smartCard.GetReaderType());
+            var response = _smartCard.Execute(apduCommand);
             return response.Success;
         }
     }

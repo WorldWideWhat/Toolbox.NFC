@@ -109,8 +109,8 @@ namespace Toolbox.NFC.Card
         /// <returns>UID</returns>
         public byte[] GetUID()
         {
-            var command = new Commands.GetUidCommand(GetReaderType());
-            var response = Execute(command);
+            var apduCommand = Commands.MifareUidCommand.Get(GetReaderType());
+            var response = Execute(apduCommand);
             if (!response.Success) return null;
             return response.ResponseData;
         }
