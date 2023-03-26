@@ -74,12 +74,15 @@ if (readers.Count > 0)
                             Console.WriteLine("Unable to authorize card");
                             return;
                         }
+                        Console.WriteLine("Card authorized");
                         if (!mifareCard.Write(DATA_TO_WRITE, 2, 1))
                         {
                             Console.WriteLine("Unable to write data to sector");
                             return;
                         }
-                        break;
+                        Console.WriteLine("Data written to sector 2 block 1");
+                        break
+                        ;
                     case Toolbox.NFC.Enums.CardType.Mifare_UltraLight_C:
                         var mifareULC = new MifareUltralightC(smartCard);
 
