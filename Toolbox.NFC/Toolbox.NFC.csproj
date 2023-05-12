@@ -1,11 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;net48;net6.0</TargetFrameworks>
+    <TargetFrameworks>net472;net48;net6.0;net7.0</TargetFrameworks>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <Version>1.0.1</Version>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <PlatformTarget>AnyCPU</PlatformTarget>	
+    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.2</AssemblyVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Title>Toolbox for NFC Mifare chips</Title>
+    <Authors>lhederidder</Authors>
+    <Company>WorldWideWhat Development</Company>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/WorldWideWhat/Toolbox.NFC</PackageProjectUrl>
+    <Description>Small package for NFC usage (windows only)</Description>
+    <RepositoryUrl>https://github.com/WorldWideWhat/Toolbox.NFC</RepositoryUrl>
+    <PackageTags>NFC;Mifare</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>	
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net472|AnyCPU'">
     <DebugType>portable</DebugType>
@@ -31,4 +40,22 @@
     <DebugType>portable</DebugType>
     <Prefer32Bit>False</Prefer32Bit>
   </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+		<DebugType>portable</DebugType>
+		<Prefer32Bit>False</Prefer32Bit>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+		<DebugType>portable</DebugType>
+		<Prefer32Bit>False</Prefer32Bit>
+	</PropertyGroup>
+	<ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>
