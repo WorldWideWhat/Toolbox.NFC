@@ -17,6 +17,7 @@ namespace Toolbox.NFC.Reader
 
         private IntPtr _hContext = IntPtr.Zero;
         private readonly string _readerName;
+        private readonly int _checkInterval;
         private SmartCard _smartCard = null;
         private Task _stateTask = null;
         private CancellationTokenSource _cancelTokenSource;
@@ -62,15 +63,21 @@ namespace Toolbox.NFC.Reader
                 return readerList;
             }
         }
-
-        public Reader(string readerName)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="readerName">Name of the contactless reader</param>
+        /// <param name="checkInterval">Interval in ms between status change state (minimum 100ms)</param>
+        /// <exception cref="Exception"></exception>
+        public Reader(string readerName, int checkInterval = 100)
         {
             _readerName = readerName;
+
+            _checkInterval = checkInterval < 100 ? 100 : checkInterval;
             if (!ConnectReader())
             {
                 throw new Exception($"Unable to connect to {readerName}");
             }
-
         }
 
         /// <summary>
@@ -174,7 +181,7 @@ namespace Toolbox.NFC.Reader
                     }
                     eventState = readerState.RdrEventState;
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(_checkInterval);
             }
         }
 
